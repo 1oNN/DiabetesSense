@@ -1,0 +1,77 @@
+# =========================
+# 🐍 Python
+# =========================
+venv/
+env/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# =========================
+# 🤖 ML / Models / Data
+# =========================
+*.joblib
+*.pkl
+*.h5
+*.pt
+*.onnx
+
+# Large datasets (optional - keep if needed)
+# Uncomment if you DON'T want datasets in repo
+# diabetes_dataset/
+
+# =========================
+# 🌐 Node / Frontend
+# =========================
+node_modules/
+build/
+dist/
+
+# =========================
+# 🔐 Environment / Secrets
+# =========================
+.env
+.env.*
+
+# =========================
+# 🧾 Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+
+# =========================
+# 🛠 OS / IDE
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =========================
+# ⚙️ Misc
+# =========================
+coverage/
+.nyc_output/
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Remove Python site-packages if accidentally tracked
+Lib/
+Scripts/
+
+# Claude (your tool)
+.claude
