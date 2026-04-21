@@ -1,10 +1,10 @@
 # Diabetes Risk Predictor
 
-A full-stack AI application that predicts the risk of diabetes using machine learning. The app analyzes health indicators from the BRFSS dataset and provides personalized health recommendations.
+A full-stack web application that predicts the risk of diabetes using machine learning. The app analyzes health indicators from the BRFSS dataset and provides personalized health recommendations.
 
 ## 🎯 Features
 
-- **AI-Powered Predictions**: Uses a Random Forest model trained on BRFSS health indicators data
+- **Machine Learning Predictions**: Uses a Random Forest model trained on BRFSS health indicators data
 - **Risk Probability**: Calculates the likelihood of diabetes risk with confidence scoring
 - **Contributing Factors**: Identifies which health metrics contribute to the risk
 - **Personalized Recommendations**: Provides actionable health recommendations based on user data

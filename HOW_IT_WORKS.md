@@ -42,7 +42,7 @@ The Diabetes Risk Predictor is a full-stack web application with a clear separat
     │  └────────────────────────────────┘ │ │
     │           ↓                          │ │
     │  ┌────────────────────────────────┐ │ │
-    │  │  ML Model                      │ │ │
+    │  │  Prediction Model              │ │ │
     │  │ - Random Forest Classifier     │ │ │
     │  │ - Probability calculation      │ │ │
     │  └────────────────────────────────┘ │ │
@@ -217,7 +217,7 @@ Each contributing factor triggers specific recommendations:
 - Older Age → Maintain healthy lifestyle, regular check-ups
 - Poor Health → Balanced diet, exercise, medical check-ups
 
-## 🤖 Machine Learning Model
+## 📊 Prediction Model
 
 ### Model Details
 
