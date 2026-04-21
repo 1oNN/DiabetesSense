@@ -1,0 +1,28 @@
+# Development Dockerfile with hot reload and debugging
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies and debugging tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir \
+    flask-cors \
+    python-dotenv \
+    ipython
+
+# Copy application code
+COPY . .
+
+# Expose port
+EXPOSE 5000
+
+# Run Flask development server with auto-reload
+CMD ["flask", "run", "--host=0.0.0.0"]

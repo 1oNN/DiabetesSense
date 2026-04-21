@@ -49,6 +49,14 @@ def get_recommendations(data, contributing_factors):
             recommendations.append("Improving your general health through a balanced diet, regular exercise, and regular medical check-ups is crucial.")
     return recommendations
 
+@main.route('/health', methods=['GET'])
+def health():
+    return jsonify({
+        'status': 'healthy',
+        'model_loaded': random_forest_model is not None,
+        'scaler_loaded': scaler is not None
+    }), 200
+
 @main.route('/predict', methods=['POST'])
 def predict():
     if random_forest_model is None or scaler is None:

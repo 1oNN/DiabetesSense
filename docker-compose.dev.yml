@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # Development backend with hot reload
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=True
+    volumes:
+      - ./app:/app/app
+      - ./run.py:/app/run.py
+      - ./scaler.joblib:/app/scaler.joblib
+    restart: unless-stopped
+
+  # Development frontend with hot reload
+  frontend:
+    build:
+      context: ./diabetes-predictor
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./diabetes-predictor/src:/app/src
+      - ./diabetes-predictor/public:/app/public
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+    restart: unless-stopped
