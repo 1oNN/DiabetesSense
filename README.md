@@ -1,130 +1,166 @@
 # Diabetes Risk Predictor
 
-A machine learning-powered web application that predicts an individual's risk of developing diabetes based on health metrics and lifestyle factors.
+A full-stack AI application that predicts the risk of diabetes using machine learning. The app analyzes health indicators from the BRFSS dataset and provides personalized health recommendations.
 
-## Overview
+## 🎯 Features
 
-This full-stack application combines a **React frontend** with a **Flask backend** to provide personalized diabetes risk assessments. It uses a Random Forest machine learning model trained on health data to:
+- **AI-Powered Predictions**: Uses a Random Forest model trained on BRFSS health indicators data
+- **Risk Probability**: Calculates the likelihood of diabetes risk with confidence scoring
+- **Contributing Factors**: Identifies which health metrics contribute to the risk
+- **Personalized Recommendations**: Provides actionable health recommendations based on user data
+- **BMI Calculator**: Built-in calculator for body mass index computation
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Interactive UI**: React-based interface with real-time form validation
 
-- Predict diabetes risk probability
-- Identify contributing health factors
-- Provide personalized health recommendations
-- Calculate BMI with an integrated calculator
+## 🚀 Quick Start
 
-## Features
+### Prerequisites
 
-- **Interactive Health Form**: User-friendly form collecting 19 health metrics
-- **Risk Prediction**: ML-powered diabetes risk assessment
-- **Contributing Factors Analysis**: Identifies key risk factors
-- **Personalized Recommendations**: Tailored health advice based on risk factors
-- **BMI Calculator**: Built-in tool for BMI calculation
-- **Responsive Design**: Works on desktop and mobile devices
-- **CORS-Enabled API**: Ready for frontend-backend integration
+- Node.js (v14+) and npm
+- Python (v3.8+)
+- pip
 
-## Project Structure
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd diabetes_app
+   ```
+
+2. **Set up the Backend**
+   ```bash
+   # Install Python dependencies
+   pip install -r requirements.txt
+   ```
+
+3. **Set up the Frontend**
+   ```bash
+   cd diabetes-predictor
+   npm install
+   cd ..
+   ```
+
+### Development
+
+**Run the Flask backend** (from project root):
+```bash
+python run.py
+```
+The API will be available at `http://localhost:5000`
+
+**Run the React frontend** (in another terminal, from `diabetes-predictor` directory):
+```bash
+npm start
+```
+The app will open at `http://localhost:3000`
+
+## 📦 Production Deployment
+
+### Heroku Deployment
+
+1. **Install Heroku CLI**
+   ```bash
+   npm install -g heroku
+   heroku login
+   ```
+
+2. **Create and Deploy**
+   ```bash
+   heroku create your-app-name
+   git push heroku main
+   ```
+
+3. **Build Frontend for Production**
+   The `Procfile` will handle backend startup. For frontend, the build should be included in the deployment.
+
+### Docker Deployment
+
+A `Dockerfile` can be created for containerized deployment:
+
+```dockerfile
+FROM python:3.9
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["gunicorn", "run:app"]
+```
+
+### Environment Variables
+
+Create a `.env` file in the root directory (for development):
+```
+FLASK_ENV=production
+FLASK_DEBUG=False
+```
+
+## 📊 Project Structure
 
 ```
 diabetes_app/
-├── app/                          # Flask backend
-│   ├── __init__.py              # App initialization & CORS setup
-│   ├── routes.py                # API endpoints
-│   └── model/                   # ML models directory
-│       └── random_forest_model_upsampled.joblib
+├── app/
+│   ├── __init__.py              # Flask app factory
+│   ├── routes.py                # API endpoints (/predict)
+│   └── model/
+│       └── random_forest_model_upsampled.joblib  # Trained ML model
 ├── diabetes-predictor/          # React frontend
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── About.js
-│   │   │   ├── BMICalculator.js
-│   │   │   ├── Contact.js
-│   │   │   ├── Footer.js
-│   │   │   ├── Header.js
 │   │   │   ├── Home.js
 │   │   │   ├── PredictionForm.js
 │   │   │   ├── Results.js
-│   │   │   └── RoutesComponent.js
-│   │   ├── assets/              # Images & logos
+│   │   │   ├── BMICalculator.js
+│   │   │   ├── About.js
+│   │   │   ├── Contact.js
+│   │   │   └── Header.js
 │   │   ├── App.js
-│   │   ├── App.css
 │   │   └── index.js
-│   ├── public/                  # Static files
-│   ├── package.json
-│   └── .env                     # Environment variables
-├── run.py                       # Flask app entry point
+│   └── package.json
+├── diabetes_dataset/            # Training data (BRFSS)
+├── scaler.joblib                # Feature scaler
 ├── requirements.txt             # Python dependencies
-├── Procfile                     # Deployment configuration
-└── scaler.joblib               # Feature scaler for ML model
-
+├── Procfile                      # Heroku deployment config
+└── run.py                        # Entry point
 ```
 
-## Tech Stack
+## 🤖 ML Model
 
-**Backend:**
-- Flask - Web framework
-- Flask-CORS - Cross-Origin Resource Sharing
-- scikit-learn - Machine learning
-- joblib - Model serialization
+- **Algorithm**: Random Forest Classifier
+- **Training Data**: Behavioral Risk Factor Surveillance System (BRFSS) 2015
+- **Features**: 21 health indicators (blood pressure, cholesterol, BMI, physical activity, etc.)
+- **Performance**: Trained on balanced dataset using upsampling technique
 
-**Frontend:**
-- React - UI framework
-- React Router - Client-side routing
-- Axios - HTTP client
+## 📡 API Endpoints
 
-## Deployment
+### POST `/predict`
 
-The application is configured for deployment on:
-- **Heroku** (via Procfile)
-- **AWS** (multiple options - see HOW_TO_RUN.md)
-- **Local development**
+Predicts diabetes risk based on health indicators.
 
-## Getting Started
-
-### Prerequisites
-- Python 3.8+
-- Node.js 14+
-- npm or yarn
-
-### Quick Start
-
-See **HOW_TO_RUN.md** for detailed setup and deployment instructions.
-
-```bash
-# Backend setup
-pip install -r requirements.txt
-python run.py
-
-# Frontend setup (in diabetes-predictor/)
-npm install
-npm start
-```
-
-## API Endpoint
-
-### POST /predict
-
-Sends health data and receives diabetes risk prediction.
-
-**Request:**
+**Request Body:**
 ```json
 {
   "HighBP": 1,
-  "HighChol": 0,
+  "HighChol": 1,
   "CholCheck": 1,
-  "BMI": 28.5,
+  "BMI": 32,
   "Smoker": 0,
   "Stroke": 0,
   "HeartDiseaseorAttack": 0,
   "PhysActivity": 1,
+  "Fruits": 1,
+  "Veggies": 1,
   "HvyAlcoholConsump": 0,
   "AnyHealthcare": 1,
   "NoDocbcCost": 0,
-  "GenHlth": 3,
-  "MentHlth": 5,
+  "GenHlth": 4,
+  "MentHlth": 0,
   "PhysHlth": 0,
   "DiffWalk": 0,
   "Sex": 0,
-  "Age": 6,
+  "Age": 55,
   "Education": 4,
-  "Income": 5
+  "Income": 8
 }
 ```
 
@@ -132,54 +168,76 @@ Sends health data and receives diabetes risk prediction.
 ```json
 {
   "prediction": 1,
-  "risk_probability": 65.5,
-  "contributing_factors": ["High BMI", "Older Age"],
-  "recommendations": ["Consider a weight loss plan..."]
+  "risk_probability": 72.5,
+  "contributing_factors": [
+    "High Blood Pressure",
+    "High Cholesterol",
+    "High BMI"
+  ],
+  "recommendations": [
+    "Monitor and manage your blood pressure through diet and medication.",
+    "Consider dietary changes and medication to manage cholesterol.",
+    "Consider a weight loss plan that includes diet and exercise to reduce your BMI."
+  ]
 }
 ```
 
-## Model Details
+## 🧪 Testing
 
-The application uses a Random Forest classifier trained on health survey data. The model requires:
-- Properly scaled input features (handled automatically)
-- 19 health-related input features
-- Outputs probability of diabetes risk (0-100%)
+**Backend Tests** (create `tests/` directory):
+```bash
+pytest tests/
+```
 
-**Model file:** `app/model/random_forest_model_upsampled.joblib`  
-**Scaler file:** `scaler.joblib`
+**Frontend Tests**:
+```bash
+cd diabetes-predictor
+npm test
+```
 
-## File Directory
+## ⚠️ Important Notes
 
-### Frontend Components
-- **Home.js** - Landing page
-- **PredictionForm.js** - Main form for health data input (19 fields)
-- **Results.js** - Risk prediction results display
-- **BMICalculator.js** - Standalone BMI calculation tool
-- **About.js** - Application information
-- **Contact.js** - Contact page
-- **Header.js** - Navigation header
-- **Footer.js** - Page footer
-- **RoutesComponent.js** - Route definitions
+- The model is for educational and demonstration purposes only
+- This is not a substitute for professional medical advice
+- Always consult with healthcare professionals for actual medical concerns
+- User data is not stored or persisted
+- CORS is enabled for local development but should be configured for production
 
-### Backend Files
-- **run.py** - Flask application entry point
-- **app/__init__.py** - Flask app initialization with CORS
-- **app/routes.py** - API prediction endpoint & logic
+## 🔐 Security
 
-### Configuration
-- **requirements.txt** - Python dependencies
-- **Procfile** - Heroku/cloud deployment config
-- **package.json** - Node.js dependencies
-- **Procfile** - Gunicorn web server config
+- Input validation is performed on health indicators
+- Model files are loaded safely using joblib
+- CORS headers are configured appropriately
+- Flask debug mode is disabled in production
 
-## Contributing
+## 📚 Documentation
 
-This is a personal project. Feel free to fork and adapt for your needs.
+For detailed technical information, see [HOW_IT_WORKS.md](HOW_IT_WORKS.md).
 
-## License
+## 📝 License
 
-MIT License - Use freely for personal and educational projects.
+[Specify your license here - e.g., MIT, Apache 2.0]
 
-## Support
+## 👥 Contributing
 
-For questions or issues, check the HOW_TO_RUN.md for detailed deployment guides.
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## 📧 Support
+
+For questions or issues, please open an issue on GitHub or contact us through the app's contact page.
+
+## 🙏 Acknowledgments
+
+- BRFSS Dataset: CDC's Behavioral Risk Factor Surveillance System
+- React: UI framework
+- Flask: Backend framework
+- scikit-learn: Machine learning library
+
+---
+
+**Last Updated**: 2026-04-21
