@@ -1,16 +1,14 @@
 # Diabetes Risk Predictor
 
-A full-stack web application that predicts the risk of diabetes using machine learning. The app analyzes health indicators from the BRFSS dataset and provides personalized health recommendations.
+A web app that predicts diabetes risk based on health indicators. Uses a Random Forest model trained on BRFSS data and provides personalized health recommendations.
 
-## 🎯 Features
+## Features
 
-- **Machine Learning Predictions**: Uses a Random Forest model trained on BRFSS health indicators data
-- **Risk Probability**: Calculates the likelihood of diabetes risk with confidence scoring
-- **Contributing Factors**: Identifies which health metrics contribute to the risk
-- **Personalized Recommendations**: Provides actionable health recommendations based on user data
-- **BMI Calculator**: Built-in calculator for body mass index computation
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Interactive UI**: React-based interface with real-time form validation
+- Diabetes risk prediction with probability scoring
+- Identifies contributing health factors
+- Personalized health recommendations
+- BMI calculator
+- Works on mobile and desktop
 
 ## 🚀 Quick Start
 
@@ -55,45 +53,20 @@ npm start
 ```
 The app will open at `http://localhost:3000`
 
-## 📦 Production Deployment
+## Deployment
 
-### Heroku Deployment
-
-1. **Install Heroku CLI**
-   ```bash
-   npm install -g heroku
-   heroku login
-   ```
-
-2. **Create and Deploy**
-   ```bash
-   heroku create your-app-name
-   git push heroku main
-   ```
-
-3. **Build Frontend for Production**
-   The `Procfile` will handle backend startup. For frontend, the build should be included in the deployment.
-
-### Docker Deployment
-
-A `Dockerfile` can be created for containerized deployment:
-
-```dockerfile
-FROM python:3.9
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["gunicorn", "run:app"]
+### Heroku
+```bash
+git push heroku main
 ```
 
-### Environment Variables
+### Docker
+```bash
+docker build -t diabetes-predictor .
+docker-compose up -d
+```
 
-Create a `.env` file in the root directory (for development):
-```
-FLASK_ENV=production
-FLASK_DEBUG=False
-```
+See [DEPLOYMENT.md](DEPLOYMENT.md) for more options.
 
 ## 📊 Project Structure
 
@@ -131,84 +104,25 @@ diabetes_app/
 - **Features**: 21 health indicators (blood pressure, cholesterol, BMI, physical activity, etc.)
 - **Performance**: Trained on balanced dataset using upsampling technique
 
-## 📡 API Endpoints
+## API
 
-### POST `/predict`
+POST `/predict` - Submit health data and get diabetes risk prediction
 
-Predicts diabetes risk based on health indicators.
+Response includes risk probability, contributing factors, and recommendations.
 
-**Request Body:**
-```json
-{
-  "HighBP": 1,
-  "HighChol": 1,
-  "CholCheck": 1,
-  "BMI": 32,
-  "Smoker": 0,
-  "Stroke": 0,
-  "HeartDiseaseorAttack": 0,
-  "PhysActivity": 1,
-  "Fruits": 1,
-  "Veggies": 1,
-  "HvyAlcoholConsump": 0,
-  "AnyHealthcare": 1,
-  "NoDocbcCost": 0,
-  "GenHlth": 4,
-  "MentHlth": 0,
-  "PhysHlth": 0,
-  "DiffWalk": 0,
-  "Sex": 0,
-  "Age": 55,
-  "Education": 4,
-  "Income": 8
-}
-```
+## Testing
 
-**Response:**
-```json
-{
-  "prediction": 1,
-  "risk_probability": 72.5,
-  "contributing_factors": [
-    "High Blood Pressure",
-    "High Cholesterol",
-    "High BMI"
-  ],
-  "recommendations": [
-    "Monitor and manage your blood pressure through diet and medication.",
-    "Consider dietary changes and medication to manage cholesterol.",
-    "Consider a weight loss plan that includes diet and exercise to reduce your BMI."
-  ]
-}
-```
-
-## 🧪 Testing
-
-**Backend Tests** (create `tests/` directory):
 ```bash
-pytest tests/
+pytest tests/          # Backend
+npm test              # Frontend (in diabetes-predictor/)
 ```
 
-**Frontend Tests**:
-```bash
-cd diabetes-predictor
-npm test
-```
+## Important
 
-## ⚠️ Important Notes
-
-- The model is for educational and demonstration purposes only
-- This is not a substitute for professional medical advice
-- Always consult with healthcare professionals for actual medical concerns
-- User data is not stored or persisted
-- CORS is enabled for local development but should be configured for production
-
-## 🔐 Security
-
-- Input validation is performed on health indicators
-- Model files are loaded safely using joblib
-- CORS headers are configured appropriately
-- Flask debug mode is disabled in production
+- For educational and demo purposes only
+- Not a substitute for medical advice
+- No user data is stored
+- Consult healthcare professionals for real concerns
 
 ## 📚 Documentation
 
