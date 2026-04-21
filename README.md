@@ -10,7 +10,7 @@ A web app that predicts diabetes risk based on health indicators. Uses a Random 
 - BMI calculator
 - Works on mobile and desktop
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -68,7 +68,7 @@ docker-compose up -d
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for more options.
 
-## 📊 Project Structure
+## Project Structure
 
 ```
 diabetes_app/
@@ -97,7 +97,7 @@ diabetes_app/
 └── run.py                        # Entry point
 ```
 
-## 🤖 ML Model
+## ML Model
 
 - **Algorithm**: Random Forest Classifier
 - **Training Data**: Behavioral Risk Factor Surveillance System (BRFSS) 2015
@@ -124,15 +124,15 @@ npm test              # Frontend (in diabetes-predictor/)
 - No user data is stored
 - Consult healthcare professionals for real concerns
 
-## 📚 Documentation
+## Documentation
 
 For detailed technical information, see [HOW_IT_WORKS.md](HOW_IT_WORKS.md).
 
-## 📝 License
+## License
 
-[Specify your license here - e.g., MIT, Apache 2.0]
+MIT
 
-## 👥 Contributing
+## Contributing
 
 Contributions are welcome! Please:
 1. Fork the repository
@@ -141,17 +141,14 @@ Contributions are welcome! Please:
 4. Push to the branch
 5. Open a Pull Request
 
-## 📧 Support
+## Support
 
 For questions or issues, please open an issue on GitHub or contact us through the app's contact page.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - BRFSS Dataset: CDC's Behavioral Risk Factor Surveillance System
 - React: UI framework
 - Flask: Backend framework
 - scikit-learn: Machine learning library
 
----
-
-**Last Updated**: 2026-04-21
