@@ -2,6 +2,16 @@
 
 A web app that predicts diabetes risk based on health indicators. Uses a Random Forest model trained on BRFSS data and provides personalized health recommendations.
 
+**The problem:** diabetes screening usually needs lab work - this asks 19 self-reportable
+questions instead.
+**The approach:** 11 classifiers benchmarked on BRFSS 2015 (253,680 CDC records); the 86/14
+class imbalance handled with random over-sampling, chosen over SMOTE/ADASYN after a
+head-to-head comparison.
+**The result:** Random Forest at 93.15% accuracy, 98.4% sensitivity, 0.9887 AUC - served by
+this Flask API + React front end.
+
+**Full case study:** https://hammadahmad.co.uk/projects/diabetes-risk
+
 ## Features
 
 - Diabetes risk prediction with probability scoring
