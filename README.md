@@ -112,7 +112,8 @@ diabetes_app/
 - **Algorithm**: Random Forest Classifier
 - **Training Data**: Behavioral Risk Factor Surveillance System (BRFSS) 2015
 - **Features**: 21 health indicators (blood pressure, cholesterol, BMI, physical activity, etc.)
-- **Performance**: Trained on balanced dataset using upsampling technique
+- **Balancing**: Random over-sampling to even out the class distribution
+- **Performance**: 93% accuracy on the test split
 
 ## API
 
