@@ -2,7 +2,7 @@
 
 This guide covers deploying the Diabetes Risk Predictor application to production using Docker and various cloud platforms.
 
-## 📦 Docker Deployment (Recommended)
+## Docker Deployment (Recommended)
 
 ### Quick Start
 
@@ -41,7 +41,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 - **Health Check**: Automatic container health monitoring
 - **Port**: 5000
 
-## ☁️ Cloud Platform Deployments
+## Cloud Platform Deployments
 
 ### Heroku
 
@@ -136,7 +136,7 @@ az container create \
   --environment-variables FLASK_ENV=production
 ```
 
-## 🔒 Security Best Practices
+## Security Best Practices
 
 ### Environment Variables
 
@@ -171,7 +171,7 @@ FROM python:3.9.15-slim
 - Set security headers via nginx
 - Use Web Application Firewall (WAF) if available
 
-## 📊 Scaling Configuration
+## Scaling Configuration
 
 ### Gunicorn Workers
 
@@ -221,7 +221,7 @@ services:
       - web
 ```
 
-## 🔍 Monitoring & Logging
+## Monitoring & Logging
 
 ### Health Checks
 
@@ -260,7 +260,7 @@ Consider integrating:
 - **Sentry** - Error tracking
 - **Prometheus** - Metrics collection
 
-## 📈 Performance Optimization
+## Performance Optimization
 
 ### Image Size Optimization
 
@@ -287,7 +287,7 @@ If adding database later:
 - Add caching (Redis)
 - Index frequently queried fields
 
-## 🧪 Testing in Production
+## Testing in Production
 
 ### Smoke Tests
 
@@ -311,7 +311,7 @@ curl -X POST http://localhost:5000/predict \
 echo "✓ Health checks passed"
 ```
 
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Container won't start
 
@@ -360,7 +360,7 @@ services:
           memory: 1G
 ```
 
-## 📋 Pre-Deployment Checklist
+## Pre-Deployment Checklist
 
 - [ ] Environment variables configured
 - [ ] CORS origins restricted
@@ -374,7 +374,7 @@ services:
 - [ ] Backup strategy in place
 - [ ] Monitoring/alerting set up
 
-## 🔄 Continuous Deployment
+## Continuous Deployment
 
 ### GitHub Actions Example
 
@@ -396,7 +396,7 @@ jobs:
           # Push to registry and deploy
 ```
 
-## 📞 Getting Help
+## Getting Help
 
 - Docker documentation: https://docs.docker.com/
 - Heroku documentation: https://devcenter.heroku.com/

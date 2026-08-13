@@ -1,0 +1,10 @@
+# Everything needed to retrain the models and regenerate the README charts.
+# The runtime app needs only requirements.txt.
+-r requirements.txt
+
+pandas
+matplotlib
+imbalanced-learn
+xgboost
+lightgbm
+catboost

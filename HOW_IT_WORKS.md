@@ -1,6 +1,6 @@
 # How It Works
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 The Diabetes Risk Predictor is a full-stack web application with a clear separation between frontend and backend:
 
@@ -36,7 +36,7 @@ The Diabetes Risk Predictor is a full-stack web application with a clear separat
     │  ┌────────────────────────────────┐ │ │
     │  │  Data Processing               │ │ │
     │  │ - Input validation             │ │ │
-    │  │ - Feature scaling              │ │ │
+    │  │ - Vector assembly by name      │ │ │
     │  │ - Contributing factors         │ │ │
     │  │ - Recommendations generation   │ │ │
     │  └────────────────────────────────┘ │ │
@@ -50,7 +50,7 @@ The Diabetes Risk Predictor is a full-stack web application with a clear separat
          └────────────────────────────────┘
 ```
 
-## 📱 Frontend (React)
+## Frontend (React)
 
 ### Technology Stack
 - **Framework**: React 18.3
@@ -87,7 +87,7 @@ App.js (Root)
 2. Browses Home/About/Contact
                 ↓
 3. Fills in Prediction Form
-   (21 health indicators)
+   (19 health indicators)
                 ↓
 4. Submits form
    (POST request to /predict)
@@ -99,7 +99,7 @@ App.js (Root)
    and recommendations
 ```
 
-## 🖥️ Backend (Flask)
+## Backend (Flask)
 
 ### Technology Stack
 - **Framework**: Flask
@@ -130,30 +130,28 @@ def create_app():
 **Workflow**:
 ```
 1. Receive JSON data from frontend
-   (21 health indicators)
+   (19 health indicators)
                 ↓
-2. Validate input data
+2. Validate: every name in FEATURE_ORDER present
+   (missing keys -> 400, listed by name)
                 ↓
 3. Convert to NumPy array
-   (reshape to 1 x 21)
+   (looked up by name, reshaped to 1 x 19)
                 ↓
-4. Apply feature scaling
-   (using pre-trained scaler)
-                ↓
-5. Make prediction with Random Forest model
+4. Make prediction with Random Forest model
    - Get class prediction (0 or 1)
    - Get probability scores
                 ↓
-6. Calculate risk probability
+5. Calculate risk probability
    (probability of class 1 * 100)
                 ↓
-7. Identify contributing factors
+6. Identify contributing factors
    - Check which health indicators are "problematic"
                 ↓
-8. Generate personalized recommendations
+7. Generate personalized recommendations
    - Based on contributing factors
                 ↓
-9. Return JSON response
+8. Return JSON response
    {
      prediction: 0 or 1,
      risk_probability: float,
@@ -166,14 +164,14 @@ def create_app():
 ```python
 # On startup
 random_forest_model = joblib.load('app/model/random_forest_model_upsampled.joblib')
-scaler = joblib.load('scaler.joblib')
 ```
-- Models are loaded once at startup
+- The model is loaded once at startup
 - Joblib provides efficient serialization for scikit-learn objects
 
 ### Health Indicators (Input Features)
 
-The model accepts 21 health indicators:
+BRFSS ships 21 indicators. `Fruits` and `Veggies` are dropped in the notebook
+before training, so the model accepts 19, in this order:
 
 1. **HighBP** - High blood pressure (0/1)
 2. **HighChol** - High cholesterol (0/1)
@@ -183,19 +181,17 @@ The model accepts 21 health indicators:
 6. **Stroke** - History of stroke (0/1)
 7. **HeartDiseaseorAttack** - Coronary heart disease/MI (0/1)
 8. **PhysActivity** - Physical activity in past 30 days (0/1)
-9. **Fruits** - Consume fruits 1+ times daily (0/1)
-10. **Veggies** - Consume vegetables 1+ times daily (0/1)
-11. **HvyAlcoholConsump** - Heavy alcohol consumption (0/1)
-12. **AnyHealthcare** - Has any healthcare coverage (0/1)
-13. **NoDocbcCost** - Could not see doctor due to cost (0/1)
-14. **GenHlth** - General health rating (1-5, 1=excellent, 5=poor)
-15. **MentHlth** - Days mental health not good (0-30)
-16. **PhysHlth** - Days physical health not good (0-30)
-17. **DiffWalk** - Difficulty walking/climbing stairs (0/1)
-18. **Sex** - Sex (0=female, 1=male)
-19. **Age** - Age group (18-24=1, 25-29=2, ..., 80 or older=13)
-20. **Education** - Education level (1-6, 1=never attended, 6=college graduate)
-21. **Income** - Income level (1-8, 1=<$10k, 8=$75k or more)
+9. **HvyAlcoholConsump** - Heavy alcohol consumption (0/1)
+10. **AnyHealthcare** - Has any healthcare coverage (0/1)
+11. **NoDocbcCost** - Could not see doctor due to cost (0/1)
+12. **GenHlth** - General health rating (1-5, 1=excellent, 5=poor)
+13. **MentHlth** - Days mental health not good (0-30)
+14. **PhysHlth** - Days physical health not good (0-30)
+15. **DiffWalk** - Difficulty walking/climbing stairs (0/1)
+16. **Sex** - Sex (0=female, 1=male)
+17. **Age** - Age group (18-24=1, 25-29=2, ..., 80 or older=13)
+18. **Education** - Education level (1-6, 1=never attended, 6=college graduate)
+19. **Income** - Income level (1-8, 1=<$10k, 8=$75k or more)
 
 ### Contributing Factors Logic
 
@@ -204,7 +200,8 @@ The system identifies problematic indicators:
 - **High Cholesterol**: `HighChol == 1`
 - **High BMI**: `BMI > 30`
 - **Lack of Physical Activity**: `PhysActivity == 0`
-- **Older Age**: `Age > 45` (approximately 55+ years)
+- **Older Age**: `Age > 45` — note that `Age` is a 1-13 band index, not a year
+  count, so this comparison never fires and the factor is not currently reported
 - **Poor General Health**: `GenHlth >= 4`
 
 ### Recommendations Generation
@@ -217,7 +214,7 @@ Each contributing factor triggers specific recommendations:
 - Older Age → Maintain healthy lifestyle, regular check-ups
 - Poor Health → Balanced diet, exercise, medical check-ups
 
-## 📊 Prediction Model
+## Prediction Model
 
 ### Model Details
 
@@ -233,19 +230,19 @@ Each contributing factor triggers specific recommendations:
   - `diabetes_binary_5050split_health_indicators_BRFSS2015.csv`
 - Random over-sampling used to even out the class distribution
 
-**Performance**: 93% accuracy on the test split
-- Evaluated on a 20% split of the over-sampled data
-- Sensitivity and specificity both above 87%
+**Performance**: 93.15% accuracy on the test split
+- Evaluated on a held-out split of the over-sampled data
+- Sensitivity 98.4%, specificity 87.9%
 
 ### Feature Scaling
 
-**Scaler Type**: StandardScaler (scikit-learn)
-- Loaded from `scaler.joblib`
-- Applied before prediction
-- Transforms input to mean=0, std=1
-- Critical for model accuracy
+**None.** The forest is trained on raw indicator values, so its split thresholds are
+in raw units — BMI in kg/m², age as a 1-13 band, general health as 1-5. Inference
+passes the same raw values straight through. A `scaler.joblib` is written by the
+notebook but is not on the prediction path; scaling the input would move every value
+below the thresholds the trees learned.
 
-## 🔄 Data Flow Example
+## Data Flow Example
 
 ### Scenario: User submits diabetes risk form
 
@@ -294,7 +291,7 @@ Display to user:
 - Recommendations
 ```
 
-## 🚀 Deployment Considerations
+## Deployment Considerations
 
 ### Local Development
 ```bash
@@ -321,11 +318,11 @@ gunicorn run:app
 - `FLASK_DEBUG`: Set to 'False'
 - `CORS_ORIGINS`: Configure for specific domains
 
-## 📊 Performance Notes
+## Performance Notes
 
 ### Model Predictions
 - Prediction latency: ~10-50ms per request
-- Model size: ~100MB (joblib file)
+- Model size: ~738 MB (joblib file; unbounded-depth forest over 436,668 rows)
 - Memory footprint: Low (scikit-learn RandomForest)
 
 ### Frontend
@@ -338,7 +335,7 @@ gunicorn run:app
 - Use load balancer for multiple instances
 - Consider caching if high traffic
 
-## 🔒 Security Considerations
+## Security Considerations
 
 ### Input Validation
 - Health indicators are validated on backend
@@ -355,7 +352,7 @@ gunicorn run:app
 - Currently open for development
 - Should restrict to specific domains in production
 
-## 🐛 Debugging
+## Debugging
 
 ### Backend Debugging
 ```python
@@ -371,11 +368,11 @@ logging.basicConfig(level=logging.DEBUG)
 
 ### Common Issues
 1. **Model not found**: Ensure `app/model/random_forest_model_upsampled.joblib` exists
-2. **Scaler not found**: Ensure `scaler.joblib` exists in root directory
+2. **400 with a `missing` list**: The payload is short of one of the 19 indicators
 3. **CORS errors**: Check Flask-CORS configuration
 4. **Port already in use**: Change port or kill existing process
 
-## 📚 Further Reading
+## Further Reading
 
 - [Random Forest Documentation](https://scikit-learn.org/stable/modules/ensemble.html#random-forests)
 - [React Documentation](https://react.dev/)

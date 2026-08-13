@@ -1,5 +1,5 @@
 # =========================
-# 🐍 Python
+# Python
 # =========================
 venv/
 env/
@@ -14,7 +14,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # =========================
-# 🤖 ML / Models / Data
+# ML / Models / Data
 # =========================
 *.joblib
 *.pkl
@@ -27,27 +27,27 @@ __pycache__/
 # diabetes_dataset/
 
 # =========================
-# 🌐 Node / Frontend
+# Node / Frontend
 # =========================
 node_modules/
 build/
 dist/
 
 # =========================
-# 🔐 Environment / Secrets
+# Environment / Secrets
 # =========================
 .env
 .env.*
 
 # =========================
-# 🧾 Logs
+# Logs
 # =========================
 logs/
 *.log
 npm-debug.log*
 
 # =========================
-# 🛠 OS / IDE
+# OS / IDE
 # =========================
 .DS_Store
 Thumbs.db
@@ -60,7 +60,7 @@ Thumbs.db
 *.sw?
 
 # =========================
-# ⚙️ Misc
+# Misc
 # =========================
 coverage/
 .nyc_output/
@@ -75,3 +75,18 @@ Scripts/
 
 # Claude (your tool)
 .claude
+
+# =========================
+# Benchmark replication
+# =========================
+# The results JSONs and the scripts that produce them are tracked - the README
+# charts are generated from them. Everything below is local working material:
+# training logs, and the PNG figures that the SVG chart script supersedes.
+rf_replication/catboost_info/
+rf_replication/figures/
+rf_replication/results_correct.json
+rf_replication/correct_methodology.py
+rf_replication/separability_ceiling.py
+rf_replication/make_figures.py
+rf_replication/make_figures_correct.py
+.gstack/
