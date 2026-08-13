@@ -10,12 +10,12 @@ logs, PNG figures, scratch analysis - is gitignored.
 
 ## Summary of what was found
 
-The thesis's **data analysis reproduces exactly** — all 18 per-variable
+The thesis's **data analysis reproduces exactly**: all 18 per-variable
 statistics checked match to the decimal (see `make_figures.py` output).
 
 The thesis's **model benchmark also reproduces**. Under the thesis protocol
 (resample the full dataset to 50/50, then split 80/20), Random Forest reaches
-**94.02% accuracy, 98.90% sensitivity, 89.14% specificity** — the same range as
+**94.02% accuracy, 98.90% sensitivity, 89.14% specificity**, the same range as
 the reported 93.15%. Exact values vary with seed and hyperparameters.
 
 Random Forest is the top model under all three samplers tested. Under ROS it

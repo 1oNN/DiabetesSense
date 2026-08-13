@@ -13,8 +13,8 @@ with no blood draw and no lab.**
 
 </div>
 
-Random Forest over CDC BRFSS 2015 — 253,680 survey responses, eleven classifier
-families benchmarked head to head, three class-balancing strategies compared —
+Random Forest over CDC BRFSS 2015: 253,680 survey responses, eleven classifier
+families benchmarked head to head, three class-balancing strategies compared,
 served as a Flask API behind a React front end.
 
 *BSc thesis project. Hammad Ahmad and Inshra Javed, with Dr Maleeha Azem and
@@ -26,9 +26,10 @@ Computer Engineering, COMSATS University Islamabad, 2024.*
 </div>
 
 A 60-64 year old man with high blood pressure, high cholesterol, a BMI of 34.2,
-no regular physical activity and self-rated *fair* general health comes back as a
-positive screen. The API puts the probability at **70.0%**; the results view names
-the five answers that drove it and attaches a recommendation to each.
+no regular physical activity and self-rated *fair* general health comes back at
+**70.0%**, against a rate of 13.9% across the survey population. The result names
+the five answers that drove it, attaches a recommendation to each, and lists back
+everything he entered.
 
 ![The results view, with contributing factors and recommendations](docs/assets/demo-result.png)
 
@@ -39,8 +40,8 @@ the five answers that drove it and attaches a recommendation to each.
 Most diabetes-risk demos are one classifier on one split. Three things here are not.
 
 **1 · No lab work anywhere in the loop.**
-No HbA1c, no fasting glucose, no blood draw. Nineteen self-reportable answers —
-blood pressure, cholesterol, BMI, activity, general health, age band — which is the
+No HbA1c, no fasting glucose, no blood draw. Nineteen self-reportable answers
+(blood pressure, cholesterol, BMI, activity, general health, age band), which is the
 whole point: a screen that costs nothing to take is a screen people actually take.
 
 **2 · Eleven classifiers, benchmarked, not assumed.**
@@ -50,8 +51,8 @@ result, and it is not close.
 
 **3 · The class imbalance *is* the problem.**
 The raw cohort is 86.1% / 13.9%. A model that answers "no diabetes" every single
-time scores 86.1% accuracy and is completely useless. Every decision downstream —
-the sampler, the metrics reported, which model ships — exists to avoid that trap.
+time scores 86.1% accuracy and is completely useless. Every decision downstream
+(the sampler, the metrics reported, which model ships) exists to avoid that trap.
 
 ---
 
@@ -60,8 +61,8 @@ the sampler, the metrics reported, which model ships — exists to avoid that tr
 ```mermaid
 flowchart LR
   subgraph client [Browser]
-    FORM[React 18 form<br/>19 questions]
-    RES[Results view]
+    FORM[React 18 form<br/>19 questions, 4 steps]
+    RES[Result + gauge<br/>+ answer receipt]
   end
 
   subgraph api [Flask backend]
@@ -108,8 +109,8 @@ prediction instead of a silently scrambled one.
 
 BRFSS ships 21 indicators. `Fruits` and `Veggies`, two coarse yes/no proxies for
 diet, are dropped in the notebook before training, leaving nineteen. Both sit among
-the weakest signals in the set — −0.04 and −0.06 against the outcome on the full
-cohort — and dropping them takes two questions off the form:
+the weakest signals in the set, at -0.04 and -0.06 against the outcome on the
+full cohort, and dropping them takes two questions off the form:
 
 | Question | Coding |
 |---|---|
@@ -133,7 +134,7 @@ cohort — and dropping them takes two questions off the form:
 | Education | 1-6 |
 | Income | 1-8 |
 
-Age is a **band index**, not a year count — the model never sees "63".
+Age is a **band index**, not a year count. The model never sees "63".
 
 ![The questionnaire](docs/assets/demo-form.png)
 
@@ -149,7 +150,7 @@ rebalanced to 50/50 first. Three ways to do that were run head to head:
 - **SMOTE** interpolates new synthetic rows between minority neighbours.
 - **ADASYN** does the same, weighted toward the rows that are hardest to classify.
 
-Most of the indicators here are binary or small-integer ordinals — "high blood
+Most of the indicators here are binary or small-integer ordinals: "high blood
 pressure" is 0 or 1, general health is 1 to 5. Interpolating between two such rows
 produces values that no respondent could ever have given. ROS duplicates real
 answer sheets instead, and it is the sampler under which the tree models pull
@@ -170,8 +171,8 @@ furthest ahead. See [the head-to-head below](#three-ways-to-balance-the-classes)
 
 **Random Forest wins, and the gap is not subtle.** It clears the next-best model by
 almost two points and the boosted ensembles by seventeen. That ordering is the
-interesting part: XGBoost, CatBoost and LightGBM — normally the default answer for
-tabular data — sit in a flat cluster in the mid-seventies, while the two models that
+interesting part: XGBoost, CatBoost and LightGBM, normally the default answer for
+tabular data, sit in a flat cluster in the mid-seventies, while the two models that
 memorise the answer space outright take the top two places.
 
 > The charts on this page are regenerated from `rf_replication/results_*.json` by
@@ -190,7 +191,7 @@ memorise the answer space outright take the top two places.
 For a screening tool the left bar is the one that matters. Missing a case sends
 someone home reassured; a false alarm sends them for a test they did not strictly
 need. Random Forest catches **98.90%** of cases while still clearing **89.14%** of
-non-cases — the only model that is strong on both. Naive Bayes is the honest
+non-cases, the only model that is strong on both. Naive Bayes is the honest
 counter-example: it is the *only* model whose specificity beats its sensitivity,
 which is exactly the wrong way round for a screen.
 
@@ -216,7 +217,7 @@ The sampler changes the answer, and it does not change it uniformly. Under SMOTE
 and ADASYN the field compresses into a tight band around 91.5% and the boosted
 ensembles catch up almost exactly to Random Forest. Under ROS the tree models pull
 away and the ensembles fall back to the mid-seventies. Same data, same models,
-different rebalancing — which is why the comparison is in the repo rather than a
+different rebalancing. That is why the comparison is in the repo rather than a
 footnote.
 
 ### Where the errors land
@@ -238,7 +239,7 @@ get tested when they did not need to.
 </picture>
 
 General health is the strongest single signal, ahead of blood pressure, BMI and
-cholesterol. Income and education both run negative — a socioeconomic gradient sits
+cholesterol. Income and education both run negative: a socioeconomic gradient sits
 underneath the clinical one. Both cohorts are plotted because rebalancing lifts every
 coefficient by roughly a tenth: the ordering is stable, the magnitudes are not, and a
 correlation quoted without its cohort is ambiguous.
@@ -249,7 +250,7 @@ correlation quoted without its cohort is ambiguous.
 </picture>
 
 Prevalence climbs from **1.4%** in the 18-24 band to **21.8%** at 70-74, then falls
-back slightly in the oldest two — a survivorship effect, not a protective one.
+back slightly in the oldest two, a survivorship effect rather than a protective one.
 
 <details>
 <summary><b>Underlying numbers</b></summary>
@@ -350,7 +351,7 @@ npm install && npm start            # http://localhost:3000
 
 > **The trained model is not in the repository.** The forest runs to unbounded
 > depth over 436,668 over-sampled rows, which puts the `.joblib` artifact at
-> roughly 738 MB — past what belongs in git. Step 2 above regenerates it into
+> roughly 738 MB, past what belongs in git. Step 2 above regenerates it into
 > `app/model/`. The dataset itself *is* committed, so the notebook runs from a
 > clean clone.
 

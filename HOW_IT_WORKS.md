@@ -200,7 +200,7 @@ The system identifies problematic indicators:
 - **High Cholesterol**: `HighChol == 1`
 - **High BMI**: `BMI > 30`
 - **Lack of Physical Activity**: `PhysActivity == 0`
-- **Older Age**: `Age > 45` — note that `Age` is a 1-13 band index, not a year
+- **Older Age**: `Age > 45`. Note that `Age` is a 1-13 band index, not a year
   count, so this comparison never fires and the factor is not currently reported
 - **Poor General Health**: `GenHlth >= 4`
 
@@ -237,7 +237,7 @@ Each contributing factor triggers specific recommendations:
 ### Feature Scaling
 
 **None.** The forest is trained on raw indicator values, so its split thresholds are
-in raw units — BMI in kg/m², age as a 1-13 band, general health as 1-5. Inference
+in raw units: BMI in kg/m², age as a 1-13 band, general health as 1-5. Inference
 passes the same raw values straight through. A `scaler.joblib` is written by the
 notebook but is not on the prediction path; scaling the input would move every value
 below the thresholds the trees learned.

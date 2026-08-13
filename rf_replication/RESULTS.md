@@ -1,4 +1,4 @@
-# Random Forest benchmark replication — BRFSS 2015
+# Random Forest benchmark replication, BRFSS 2015
 
 Replication of the "DiabetesSense" claims (93.15% accuracy, Random Forest,
 Random Over-Sampling, 80/20 split) against
@@ -35,7 +35,7 @@ but match the 50/50 balanced data almost exactly:
 
 GenHlth is coded 1 = excellent … 5 = poor, so the measured correlation is
 positive (+0.41 balanced); the write-up presents it as -0.41 ("better general
-health is protective") — a presentation sign flip, not a different value.
+health is protective"), a presentation sign flip rather than a different value.
 
 ## Age-band prevalence: exact match on balanced data
 

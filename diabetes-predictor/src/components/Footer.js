@@ -1,12 +1,9 @@
-import copyrightLogo from "../assets/copyright.png";
-
 export default function Footer() {
   return (
     <footer>
       <p>
-        <img src={copyrightLogo} alt="Copyright Logo" className="footer-logo" />{" "}
-        All rights reserved
-
+        DiabetesSense is a screening tool, not a medical device. Built on the
+        CDC Behavioral Risk Factor Surveillance System, 2015.
       </p>
     </footer>
   );

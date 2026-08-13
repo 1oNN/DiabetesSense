@@ -1,78 +1,165 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "../App.css";
+
+/* Prevalence of diabetes in the full BRFSS 2015 cohort. The screening figure
+   is meaningless on its own, so it is always drawn against this. */
+const POPULATION_RATE = 13.9;
+
+const RECEIPT = [
+  ["HighBP", "High blood pressure", (v) => (v ? "Yes" : "No")],
+  ["HighChol", "High cholesterol", (v) => (v ? "Yes" : "No")],
+  ["BMI", "Body mass index", (v) => Number(v).toFixed(1)],
+  ["GenHlth", "General health", (v) =>
+    ["", "Excellent", "Very good", "Good", "Fair", "Poor"][v] || "-"],
+  ["Age", "Age band", (v) =>
+    ["", "18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54",
+     "55-59", "60-64", "65-69", "70-74", "75-79", "80+"][v] || "-"],
+  ["PhysActivity", "Active in the past month", (v) => (v ? "Yes" : "No")],
+  ["Smoker", "Smoked 100+ cigarettes", (v) => (v ? "Yes" : "No")],
+  ["DiffWalk", "Difficulty walking", (v) => (v ? "Yes" : "No")],
+  ["PhysHlth", "Poor physical-health days", (v) => `${v}`],
+  ["MentHlth", "Poor mental-health days", (v) => `${v}`],
+];
 
 function Results() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { result } = location.state || {};
+  const { result, answers } = location.state || {};
 
-  const openDoctorSearch = () => {
-    window.open(
-      "https://www.google.com/search?q=diabetes+doctors+near+me",
-      "_blank"
-    );
-  };
-
-  return (
-    <div className="container result-container">
-      <h1>Prediction Result</h1>
-      <div className="result-content">
-        <p style={{ fontSize: result?.prediction === 1 ? "1.1em" : "1em" }}>
-          {result?.prediction === 1 ? (
-            <>
-              You already <span className="high-risk-text">Have Diabetes</span>{" "}
-              or are at{" "}
-              <span className="high-risk-text">High Risk of Diabetes.</span>
-            </>
-          ) : (
-            "You do not currently have diabetes."
-          )}
-        </p>
-        <p>
-          {result?.prediction === 0 && (
-            <>
-              However, you are at{" "}
-              <span className="risk-percentage">
-                {result?.risk_probability.toFixed(2)}%
-              </span>{" "}
-              risk of developing diabetes in the future.
-            </>
-          )}
-        </p>
-        <h2>Contributing Factors</h2>
-        <p>The following factors contributed to your results:</p>
-        {result?.contributing_factors?.length > 0 ? (
-          <ul>
-            {result.contributing_factors.map((factor) => (
-              <li key={factor}>{factor}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No contributing factors available.</p>
-        )}
-        <h2>Recommendations</h2>
-        {result?.prediction === 1 && (
-          <p>
-            <strong>We suggest you see a doctor as soon as possible.</strong>
-          </p>
-        )}
-        {result?.recommendations &&
-          result.recommendations.map((recommendation, index) => (
-            <div key={index}>
-              <p>{recommendation}</p>
-            </div>
-          ))}
-        {result?.prediction === 1 && (
+  if (!result) {
+    return (
+      <div className="container">
+        <div className="result-shell">
+          <h1>No result to show</h1>
+          <p>Answer the nineteen questions and the screen will appear here.</p>
           <div className="button-container">
-            <button onClick={openDoctorSearch}>
-              Search for Diabetes Doctors Near Me
+            <button onClick={() => navigate("/predict")}>
+              Start the screen
             </button>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  const risk = Number(result.risk_probability) || 0;
+  const positive = result.prediction === 1;
+  const factors = result.contributing_factors || [];
+  const advice = result.recommendations || [];
+
+  return (
+    <div className="container">
+      <div className="result-shell">
+        <p className="result-eyebrow">Screening result</p>
+
+        <div className="result-figure">{risk.toFixed(1)}%</div>
+        <p className="result-verdict">
+          {positive
+            ? "Your answers match the pattern the model associates with diabetes."
+            : "Your answers do not match the pattern the model associates with diabetes."}
+        </p>
+
+        {/* Signature: your figure against the population's actual rate. */}
+        <div className="gauge">
+          <div className="gauge-track">
+            <div className="gauge-fill" style={{ width: `${Math.min(risk, 100)}%` }} />
+            <div
+              className="gauge-baseline"
+              style={{ left: `${POPULATION_RATE}%` }}
+              title="Population rate"
+            />
+          </div>
+          <div className="gauge-legend">
+            <span>
+              <span className="mono">{POPULATION_RATE}%</span> of US adults in
+              this survey had diabetes
+            </span>
+            <span>
+              <span className="mono">{risk.toFixed(1)}%</span> for your answers
+            </span>
+          </div>
+        </div>
+
+        {positive && (
+          <div className="result-section">
+            <div className="callout">
+              A positive screen is not a diagnosis. It means a blood test is
+              worth booking with your doctor.
+            </div>
+            <div className="button-container">
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://www.google.com/search?q=diabetes+doctors+near+me",
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                }
+              >
+                Find a doctor nearby
+              </button>
+            </div>
+          </div>
         )}
-        <div className="button-container">
-          <button onClick={() => navigate("/predict")}>
-            Predict Another Test
-          </button>
+
+        {factors.length > 0 && (
+          <div className="result-section">
+            <h2>What drove it</h2>
+            <ul className="factor-list">
+              {factors.map((factor, i) => (
+                <li className="factor" key={factor}>
+                  <span className="factor-rank">{i + 1}</span>
+                  <span className="factor-name">{factor}</span>
+                  <span
+                    className="factor-bar"
+                    style={{ opacity: 0.85 - i * 0.12 }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {advice.length > 0 && (
+          <div className="result-section">
+            <h2>What you can do</h2>
+            <ul className="advice-list">
+              {advice.map((line) => (
+                <li className="advice" key={line}>
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {answers && (
+          <div className="result-section">
+            <h2>What you told us</h2>
+            <ul className="receipt">
+              {RECEIPT.map(([key, label, fmt]) => (
+                <li key={key}>
+                  {label}
+                  <span>{fmt(answers[key])}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <p className="disclaimer">
+          This is a screening tool built on self-reported survey data, not a
+          medical device. It cannot diagnose anything. Nothing you entered was
+          stored.
+        </p>
+
+        <div className="result-section">
+          <div className="button-container">
+            <button className="ghost" onClick={() => navigate("/predict")}>
+              Take it again
+            </button>
+          </div>
         </div>
       </div>
     </div>

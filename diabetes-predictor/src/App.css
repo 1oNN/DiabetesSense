@@ -1,354 +1,798 @@
-/* Base Styles */
+/* ============================================================================
+   DiabetesSense
+
+   A screening instrument, not a dashboard. The people most likely to use this
+   are in the 60-74 bands, where prevalence peaks, and income and education both
+   correlate negatively with the outcome. So: large type, high contrast, wide
+   targets, plain words, and no alarm colours anywhere in the questionnaire.
+
+   Amber is reserved for exactly one thing, the risk result. It appears nowhere
+   else in the app, which is what makes it land when it finally shows up.
+   ========================================================================= */
+
+:root {
+  /* Surfaces. Cool paper rather than cream: this is an exam room, not a cafe. */
+  --paper: #f7f8f7;
+  --card: #ffffff;
+  --wash: #eef3f1;
+
+  /* Ink */
+  --ink: #12312e;
+  --ink-soft: #4f6462;
+  --ink-faint: #7d918e;
+
+  /* Structure */
+  --rule: #dde5e3;
+  --rule-strong: #c3d2ce;
+
+  /* Primary: considered, clinical, calm */
+  --teal: #0e6f63;
+  --teal-deep: #0a544b;
+  --teal-wash: #e6f1ee;
+
+  /* Reserved for the result. Used nowhere else. */
+  --amber: #b4611a;
+  --amber-wash: #fbf0e5;
+
+  --focus: #0e6f63;
+
+  --serif: "Newsreader", Georgia, serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --measure: 34rem;
+  --radius: 10px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 body {
-  background-color: #121212;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
 }
 
 .App {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
+
+.App > *:nth-child(2) {
+  flex: 1;
+}
+
+/* --- Type ---------------------------------------------------------------- */
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 1.4rem + 2vw, 2.6rem);
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+p {
+  margin: 0 0 1rem;
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--teal);
+}
+
+/* Visible keyboard focus everywhere, never removed. */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --- Header -------------------------------------------------------------- */
 
 header {
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 1.25rem;
-  background-color: #282828;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.1rem clamp(1rem, 5vw, 3rem);
+  background: var(--card);
+  border-bottom: 1px solid var(--rule);
 }
 
 header .logo-nav-container {
   display: flex;
   align-items: center;
-  margin-right: 1.25rem;
 }
 
-.logo-container {
+.logo-container a {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--ink);
 }
 
-header img {
-  width: 3.125rem;
+.wordmark {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  letter-spacing: -0.015em;
 }
 
 nav {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.6rem;
   align-items: center;
 }
 
 nav a {
-  color: #43a7ff;
+  color: var(--ink-soft);
   text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  font-size: 0.94rem;
+  padding: 0.2rem 0;
+  border-bottom: 1.5px solid transparent;
+  transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
 }
 
 nav a:hover,
 nav a:focus {
-  color: #68baff;
-  text-decoration: underline;
+  color: var(--teal);
+  border-bottom-color: var(--teal);
 }
 
-nav a:visited,
-nav a:active {
-  color: #43a7ff;
-}
+/* --- Shell --------------------------------------------------------------- */
 
 .container {
-  margin: 1.25rem auto;
-  padding: 1.25rem;
-  border-radius: 0.5rem;
-  background-color: #1e1e1e;
-  width: 80%;
-  max-width: 50rem;
-  text-align: left;
+  width: 100%;
+  max-width: 46rem;
+  margin: clamp(2rem, 6vw, 4.5rem) auto;
+  padding: 0 clamp(1rem, 5vw, 2rem);
 }
 
 .home-container {
+  text-align: left;
+}
+
+/* --- Home ---------------------------------------------------------------- */
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.4rem;
+}
+
+.hero h1 {
+  max-width: 18ch;
+  margin-bottom: 1.1rem;
+}
+
+.hero-lede {
+  font-size: 1.12rem;
+  color: var(--ink-soft);
+  max-width: 40ch;
+  margin-bottom: 2.2rem;
+}
+
+.hero-facts {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  flex-wrap: wrap;
+  gap: 0 2.6rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.4rem;
+  margin-top: 2.6rem;
+}
+
+.hero-fact {
+  padding: 0.4rem 0;
+}
+
+.hero-fact dt {
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+  margin-bottom: 0.15rem;
+}
+
+.hero-fact dd {
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  margin: 0;
+  color: var(--ink);
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+
+button {
+  font-family: var(--sans);
+  font-size: 0.98rem;
+  font-weight: 500;
+  padding: 0.78rem 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--teal);
+  background: var(--teal);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+button:hover {
+  background: var(--teal-deep);
+  border-color: var(--teal-deep);
+}
+
+button.ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border-color: var(--rule-strong);
+}
+
+button.ghost:hover {
+  background: var(--wash);
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .button-container {
   display: flex;
-  justify-content: center;
-  width: 100%;
+  gap: 0.75rem;
 }
 
-.prediction-form-container {
+/* --- Form ---------------------------------------------------------------- */
+
+.form-shell {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: clamp(1.4rem, 4vw, 2.6rem);
+}
+
+/* Progress: four steps, each a rule that fills. Encodes position, not decoration. */
+.progress {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: left;
-  background-color: #282828;
-  padding: 1.25rem;
-  border-radius: 0.5rem;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2.2rem;
 }
 
-.prediction-form {
-  width: 100%;
+.progress-steps {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+
+.progress-bar {
+  height: 3px;
+  flex: 1;
+  background: var(--rule);
+  border-radius: 2px;
+  transition: background 0.3s var(--ease);
+}
+
+.progress-bar.done {
+  background: var(--teal);
+}
+
+.progress-bar.current {
+  background: var(--teal);
+  opacity: 0.45;
+}
+
+.progress-label {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.step-title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  margin-bottom: 0.2rem;
+}
+
+.step-note {
+  color: var(--ink-faint);
+  font-size: 0.92rem;
+  margin-bottom: 2rem;
+}
+
+.step {
+  animation: rise 0.26s var(--ease) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 
 .form-group {
-  margin-bottom: 0.9375rem;
+  padding: 1.35rem 0;
+  border-top: 1px solid var(--rule);
 }
 
-.form-group label {
+.form-group:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* The question is set in the serif: a person asking, not a system demanding. */
+.form-group > label,
+.form-group > .group-label {
   display: block;
-  color: #ff6f61;
-  margin-bottom: 0.3125rem;
+  font-family: var(--serif);
+  font-size: 1.16rem;
+  line-height: 1.35;
+  color: var(--ink);
+  margin-bottom: 0.85rem;
+  max-width: 40ch;
 }
 
+.field-hint {
+  font-size: 0.87rem;
+  color: var(--ink-faint);
+  margin-top: 0.5rem;
+}
+
+/* Segmented yes/no. Wide targets, the whole tile is the control. */
 .radio-group {
   display: flex;
-  gap: 1.25rem;
+  gap: 0.6rem;
+  max-width: 26rem;
 }
 
 .radio-group label {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1rem;
+  background: var(--card);
+  border: 1.5px solid var(--rule-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease),
+    color 0.16s var(--ease);
+}
+
+.radio-group label:hover {
+  border-color: var(--teal);
+  color: var(--ink);
+}
+
+.radio-group input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.radio-group label:has(input:checked) {
+  background: var(--teal-wash);
+  border-color: var(--teal);
+  color: var(--teal-deep);
+  font-weight: 500;
+}
+
+.radio-group label:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 input[type="number"],
-select,
-.radio-group label {
-  background-color: #333333;
-  color: #ffffff;
-  border: 1px solid #444444;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  width: calc(100% - 1rem);
+select {
+  width: 100%;
+  max-width: 26rem;
+  padding: 0.72rem 0.9rem;
+  background: var(--card);
+  border: 1.5px solid var(--rule-strong);
+  border-radius: var(--radius);
+  color: var(--ink);
+  transition: border-color 0.16s var(--ease);
 }
 
-button {
-  background-color: #ff6f61;
-  border: none;
-  color: #121212;
-  padding: 0.625rem 1.25rem;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 1rem;
-  margin: 1.25rem auto;
-  cursor: pointer;
-  border-radius: 0.3125rem;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+input[type="number"] {
+  font-family: var(--mono);
 }
 
-button:hover {
-  background-color: #ff8a75;
+input[type="number"]:hover,
+select:hover {
+  border-color: var(--teal);
 }
 
-.error {
-  color: #ff6f61;
-  font-weight: bold;
-}
-
-footer {
-  background-color: #282828;
-  color: #ff6f61;
-  padding: 1.25rem;
-  text-align: center;
-  font-weight: bold;
-}
-
-footer p {
-  margin: 0.3125rem 0;
-}
-
-footer .credits {
-  margin-top: 0.625rem;
-  font-size: 0.875rem;
-}
-
-.footer-logo {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1rem;
-  margin-right: 0.3125rem;
-}
-
-.result-container {
-  background-color: #1e1e1e;
-  padding: 1.25rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  max-width: 37.5rem;
-  margin: 2.5rem auto;
-}
-
-.result-content p {
-  color: #ffffff;
-  text-align: left;
-  margin-bottom: 0.9375rem;
-}
-
-.result-content h1,
-.result-content h2 {
-  color: #ff6f61;
-  text-align: center;
-}
-
-.result-content .button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.25rem;
-}
-
-.result-content .high-risk-text {
-  color: #ff6f61;
-  font-weight: bold;
-}
-
-.result-content .risk-percentage {
-  color: green;
-  font-weight: bold;
-}
-
-.result-content ul {
-  list-style-type: disc;
-  margin: 0.625rem 0;
-  padding-left: 1.25rem;
-}
-
-.result-content li {
-  margin-bottom: 0.3125rem;
-  color: #ffffff;
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%234f6462' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.4rem;
 }
 
 .bmi-link {
-  color: #ffa299;
-  margin-left: 0.625rem;
+  color: var(--teal);
+  font-size: 0.87rem;
   text-decoration: none;
-  font-weight: bold;
+  border-bottom: 1px solid var(--rule-strong);
 }
 
-.bmi-link:hover,
-.bmi-link:focus {
-  text-decoration: underline;
+.bmi-link:hover {
+  border-bottom-color: var(--teal);
 }
 
-.bmi-container {
+.form-actions {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--rule);
 }
+
+.error {
+  color: var(--amber);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* --- Result -------------------------------------------------------------- */
+
+.result-shell {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: clamp(1.4rem, 4vw, 2.6rem);
+}
+
+.result-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.6rem;
+}
+
+.result-figure {
+  font-family: var(--mono);
+  font-size: clamp(3.2rem, 2rem + 6vw, 5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--amber);
+}
+
+.result-verdict {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  line-height: 1.35;
+  margin: 1.1rem 0 0;
+  max-width: 34ch;
+  color: var(--ink);
+}
+
+/* Signature: the gauge. A percentage alone means nothing, so the population
+   baseline is drawn on the same scale for comparison. */
+.gauge {
+  margin: 2.4rem 0 0;
+}
+
+.gauge-track {
+  position: relative;
+  height: 6px;
+  background: var(--wash);
+  border-radius: 3px;
+}
+
+.gauge-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--amber);
+  border-radius: 3px;
+  animation: sweep 0.7s var(--ease) both;
+}
+
+@keyframes sweep {
+  from {
+    width: 0 !important;
+  }
+}
+
+.gauge-baseline {
+  position: absolute;
+  top: -7px;
+  bottom: -7px;
+  width: 1.5px;
+  background: var(--ink-soft);
+}
+
+.gauge-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.8rem;
+  font-size: 0.83rem;
+  color: var(--ink-faint);
+}
+
+.gauge-legend .mono {
+  font-family: var(--mono);
+  color: var(--ink-soft);
+}
+
+.result-section {
+  margin-top: 2.6rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--rule);
+}
+
+.result-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Factors, ranked, with a bar. Reads as evidence rather than a bullet list. */
+.factor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.factor {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.72rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.factor:last-child {
+  border-bottom: none;
+}
+
+.factor-rank {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
+.factor-name {
+  color: var(--ink);
+}
+
+.factor-bar {
+  width: clamp(3rem, 18vw, 7rem);
+  height: 5px;
+  background: var(--teal);
+  border-radius: 3px;
+  opacity: 0.75;
+}
+
+.advice-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.advice {
+  padding: 0.85rem 0 0.85rem 1.2rem;
+  border-left: 2px solid var(--teal-wash);
+  margin-bottom: 0.5rem;
+  color: var(--ink-soft);
+  max-width: var(--measure);
+}
+
+.callout {
+  background: var(--amber-wash);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin: 0 0 1.6rem;
+  color: #7c430f;
+  max-width: var(--measure);
+}
+
+.disclaimer {
+  margin-top: 2.6rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--ink-faint);
+}
+
+/* Receipt: what you actually answered, so the number is traceable. */
+.receipt {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 2.4rem;
+  font-size: 0.9rem;
+}
+
+.receipt li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.42rem 0;
+  border-bottom: 1px solid var(--rule);
+  break-inside: avoid;
+  color: var(--ink-faint);
+}
+
+.receipt li span {
+  font-family: var(--mono);
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+/* --- BMI calculator ------------------------------------------------------ */
 
 .bmi-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2.5rem;
+  align-items: start;
 }
 
 .bmi-inputs {
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
-}
-
-.bmi-buttons {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.bmi-buttons .right-button {
-  margin-left: auto;
-}
-
-.bmi-result {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.625rem;
-}
-
-.height-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3125rem;
+  gap: 1.2rem;
 }
 
 .height-inputs {
   display: flex;
-  gap: 0.625rem;
+  gap: 0.6rem;
+}
+
+.bmi-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .bmi-table {
-  margin: 0 0 0 2.5rem;
-  border: 1px solid #ffffff;
-  padding: 0.625rem;
-  border-radius: 0.25rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.3rem;
+  background: var(--card);
+}
+
+.bmi-table h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.7rem;
 }
 
 .bmi-table table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.bmi-table th,
-.bmi-table td {
-  border: 1px solid #ffffff;
-  padding: 0.5rem;
-  text-align: left;
+  font-size: 0.88rem;
 }
 
 .bmi-table th {
-  background-color: #333333;
+  text-align: left;
+  font-weight: 500;
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
 }
 
 .bmi-table td {
-  background-color: #1e1e1e;
+  padding: 0.42rem 1.4rem 0.42rem 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
 }
+
+.bmi-table td:last-child {
+  font-family: var(--mono);
+  padding-right: 0;
+}
+
+.bmi-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* --- Footer -------------------------------------------------------------- */
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 1.6rem clamp(1rem, 5vw, 3rem);
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+  background: var(--card);
+}
+
+footer p {
+  margin: 0;
+  max-width: none;
+}
+
+.footer-logo {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0.85rem;
+  margin-right: 0.3rem;
+  opacity: 0.5;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
 
 .hamburger {
   display: none;
-  flex-direction: column;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.4rem;
 }
 
 .hamburger img {
-  width: 2.1875rem;
-  height: 2.1875rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0.6;
 }
 
-@media (max-width: 768px) {
-  header {
-    display: block;
-    padding: 0.625rem 1.25rem;
+@media (max-width: 760px) {
+  body {
+    font-size: 16px;
   }
 
-  .logo-container {
-    margin-right: auto;
+  header {
+    flex-wrap: wrap;
+    padding: 0.9rem 1rem;
+  }
+
+  .logo-nav-container {
+    flex: 1;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .hamburger {
-    display: flex;
-    margin-left: auto;
+    display: block;
   }
 
   nav {
     display: none;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    gap: 0.2rem;
     width: 100%;
-    background-color: #282828;
-    position: absolute;
-    top: 3.75rem;
-    left: 0;
-    z-index: 1000;
+    padding-top: 0.8rem;
   }
 
   nav.nav-open {
@@ -356,45 +800,30 @@ footer .credits {
   }
 
   nav a {
-    padding: 0.625rem;
     width: 100%;
-    text-align: center;
-    margin-bottom: 0.625rem; /* Add margin to space out the nav items */
-  }
-
-  .container {
-    width: 90%;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--rule);
   }
 
   .bmi-content {
-    flex-direction: column;
-    gap: 0.625rem;
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
   }
 
-  .bmi-inputs,
-  .bmi-buttons {
-    gap: 0.625rem;
+  .receipt {
+    columns: 1;
   }
 
-  .height-inputs {
-    flex-direction: column;
+  .radio-group {
+    max-width: none;
   }
 
-  .bmi-table {
-    margin: 1.25rem 0;
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
   }
 
-  .bmi-table table {
-    font-size: 0.875rem;
+  .form-actions button {
+    width: 100%;
   }
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-h2 {
-  color: #ff6f61;
-  font-size: 1.5rem;
-  margin-top: 1.25rem;
 }
