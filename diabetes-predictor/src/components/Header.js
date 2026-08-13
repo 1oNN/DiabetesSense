@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import hamburgerMenu from "../assets/hamburger-menu.png";
 
-/* The mark is the same gauge idea the result page uses: a scale with a
-   reading on it. Drawn inline so it takes the ink colour. */
+/* Inline so it picks up theme colours. */
 const Mark = () => (
   <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
-    <circle cx="13" cy="13" r="10" fill="none" stroke="#dde5e3" strokeWidth="2.5" />
+    <circle cx="13" cy="13" r="10" fill="none" stroke="#454545" strokeWidth="2.5" />
     <path
       d="M13 3a10 10 0 0 1 8.66 5"
       fill="none"
-      stroke="#0e6f63"
+      stroke="#ff6f61"
       strokeWidth="2.5"
       strokeLinecap="round"
     />
-    <circle cx="13" cy="13" r="2.1" fill="#12312e" />
+    <circle cx="13" cy="13" r="2.1" fill="#ffffff" />
   </svg>
 );
 

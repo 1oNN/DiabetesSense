@@ -37,19 +37,10 @@ SAMPLERS = ["ROS", "SMOTE", "ADASYN"]
 HERO = "Random Forest"
 
 
-# ---------------------------------------------------------------------------
-# Palette
-#
-# Categorical slots 1-3 and the diverging pair, validated with the dataviz
-# validator against GitHub's own canvases (#ffffff light, #0d1117 dark) on the
-# all-pairs list. Aqua sits at 2.82:1 on the light canvas, under the 3:1 bar,
-# so every chart that uses it ships direct value labels and the README carries
-# the full numbers in a table - the relief the contrast rule requires.
-#
-# `muted` is deliberately achromatic. It is not a categorical slot: it means
-# "not the highlighted model", identity is carried by the axis label, and the
-# chart is a single-series highlight rather than an 11-way colour encoding.
-# ---------------------------------------------------------------------------
+# Checked for colour-vision deficiency and contrast against GitHub's canvases
+# (#ffffff / #0d1117). Aqua is 2.82:1 on light, under the 3:1 bar, so charts
+# using it carry value labels. `muted` is achromatic on purpose: it means "not
+# the highlighted model", the axis label carries identity.
 THEMES = {
     "light": {
         "series": ["#2a78d6", "#eb6834", "#1baf7a"],
@@ -80,8 +71,7 @@ THEMES = {
 
 def style(theme: dict) -> None:
     plt.rcParams.update({
-        # Fixed salt so clip-path ids are stable between runs. Without it every
-        # regeneration rewrites all fourteen files with no visual change.
+        # Stable clip-path ids between runs.
         "svg.hashsalt": "diabetessense",
         "font.family": "sans-serif",
         "font.sans-serif": ["Segoe UI", "Helvetica Neue", "Arial", "DejaVu Sans"],
@@ -159,8 +149,7 @@ def rounded_bar(ax, x0, x1, y0, y1, color, radius_px=4.0, end="right", **kw):
 def save(fig, name: str, mode: str) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     path = OUT_DIR / f"{name}_{mode}.svg"
-    # Date=None drops the embedded timestamp, so identical inputs give an
-    # identical file and `git status` stays quiet after a regeneration.
+    # Date=None drops the timestamp, so reruns are byte identical.
     fig.savefig(path, format="svg", transparent=True, bbox_inches="tight",
                 pad_inches=0.12, metadata={"Date": None})
     plt.close(fig)

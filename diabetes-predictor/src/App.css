@@ -1,40 +1,32 @@
-/* ============================================================================
-   DiabetesSense
-
-   A screening instrument, not a dashboard. The people most likely to use this
-   are in the 60-74 bands, where prevalence peaks, and income and education both
-   correlate negatively with the outcome. So: large type, high contrast, wide
-   targets, plain words, and no alarm colours anywhere in the questionnaire.
-
-   Amber is reserved for exactly one thing, the risk result. It appears nowhere
-   else in the app, which is what makes it land when it finally shows up.
-   ========================================================================= */
+/* Dark theme, single coral accent. Large type and wide targets:
+   most users of this are 60+. */
 
 :root {
-  /* Surfaces. Cool paper rather than cream: this is an exam room, not a cafe. */
-  --paper: #f7f8f7;
-  --card: #ffffff;
-  --wash: #eef3f1;
+  /* page, card, well */
+  --paper: #121212;
+  --card: #1e1e1e;
+  --wash: #282828;
 
   /* Ink */
-  --ink: #12312e;
-  --ink-soft: #4f6462;
-  --ink-faint: #7d918e;
+  --ink: #ffffff;
+  --ink-soft: #b9b9b9;
+  --ink-faint: #8a8a8a;
 
   /* Structure */
-  --rule: #dde5e3;
-  --rule-strong: #c3d2ce;
+  --rule: #313131;
+  --rule-strong: #454545;
 
-  /* Primary: considered, clinical, calm */
-  --teal: #0e6f63;
-  --teal-deep: #0a544b;
-  --teal-wash: #e6f1ee;
+  /* accent, 6.1:1 on --paper */
+  --accent: #ff6f61;
+  --accent-deep: #ff8a75; /* hover */
+  --accent-wash: #2b1a18;
+  --on-accent: #121212;
 
-  /* Reserved for the result. Used nowhere else. */
-  --amber: #b4611a;
-  --amber-wash: #fbf0e5;
+  /* result figure, same hue; the size carries it */
+  --signal: #ff6f61;
+  --signal-wash: #2b1a18;
 
-  --focus: #0e6f63;
+  --focus: #ff8a75;
 
   --serif: "Newsreader", Georgia, serif;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -95,10 +87,10 @@ p {
 }
 
 a {
-  color: var(--teal);
+  color: var(--accent);
 }
 
-/* Visible keyboard focus everywhere, never removed. */
+/* keyboard focus */
 :where(a, button, input, select, [tabindex]):focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
@@ -153,8 +145,8 @@ nav a {
 
 nav a:hover,
 nav a:focus {
-  color: var(--teal);
-  border-bottom-color: var(--teal);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 /* --- Shell --------------------------------------------------------------- */
@@ -227,16 +219,16 @@ button {
   font-weight: 500;
   padding: 0.78rem 1.5rem;
   border-radius: var(--radius);
-  border: 1px solid var(--teal);
-  background: var(--teal);
-  color: #fff;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
   cursor: pointer;
   transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
 }
 
 button:hover {
-  background: var(--teal-deep);
-  border-color: var(--teal-deep);
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
 }
 
 button.ghost {
@@ -270,7 +262,7 @@ button:disabled {
   padding: clamp(1.4rem, 4vw, 2.6rem);
 }
 
-/* Progress: four steps, each a rule that fills. Encodes position, not decoration. */
+/* one rule per step */
 .progress {
   display: flex;
   align-items: center;
@@ -294,11 +286,11 @@ button:disabled {
 }
 
 .progress-bar.done {
-  background: var(--teal);
+  background: var(--accent);
 }
 
 .progress-bar.current {
-  background: var(--teal);
+  background: var(--accent);
   opacity: 0.45;
 }
 
@@ -344,7 +336,6 @@ button:disabled {
   padding-top: 0;
 }
 
-/* The question is set in the serif: a person asking, not a system demanding. */
 .form-group > label,
 .form-group > .group-label {
   display: block;
@@ -362,7 +353,7 @@ button:disabled {
   margin-top: 0.5rem;
 }
 
-/* Segmented yes/no. Wide targets, the whole tile is the control. */
+/* whole tile is the control */
 .radio-group {
   display: flex;
   gap: 0.6rem;
@@ -376,7 +367,7 @@ button:disabled {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.72rem 1rem;
-  background: var(--card);
+  background: var(--wash);
   border: 1.5px solid var(--rule-strong);
   border-radius: var(--radius);
   cursor: pointer;
@@ -387,7 +378,7 @@ button:disabled {
 }
 
 .radio-group label:hover {
-  border-color: var(--teal);
+  border-color: var(--accent);
   color: var(--ink);
 }
 
@@ -399,9 +390,9 @@ button:disabled {
 }
 
 .radio-group label:has(input:checked) {
-  background: var(--teal-wash);
-  border-color: var(--teal);
-  color: var(--teal-deep);
+  background: var(--accent-wash);
+  border-color: var(--accent);
+  color: var(--accent);
   font-weight: 500;
 }
 
@@ -415,7 +406,7 @@ select {
   width: 100%;
   max-width: 26rem;
   padding: 0.72rem 0.9rem;
-  background: var(--card);
+  background: var(--wash);
   border: 1.5px solid var(--rule-strong);
   border-radius: var(--radius);
   color: var(--ink);
@@ -428,26 +419,26 @@ input[type="number"] {
 
 input[type="number"]:hover,
 select:hover {
-  border-color: var(--teal);
+  border-color: var(--accent);
 }
 
 select {
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%234f6462' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%23b9b9b9' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.9rem center;
   padding-right: 2.4rem;
 }
 
 .bmi-link {
-  color: var(--teal);
+  color: var(--accent);
   font-size: 0.87rem;
   text-decoration: none;
   border-bottom: 1px solid var(--rule-strong);
 }
 
 .bmi-link:hover {
-  border-bottom-color: var(--teal);
+  border-bottom-color: var(--accent);
 }
 
 .form-actions {
@@ -461,7 +452,7 @@ select {
 }
 
 .error {
-  color: var(--amber);
+  color: var(--signal);
   font-size: 0.9rem;
   margin: 0;
 }
@@ -490,7 +481,7 @@ select {
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: var(--amber);
+  color: var(--signal);
 }
 
 .result-verdict {
@@ -502,8 +493,7 @@ select {
   color: var(--ink);
 }
 
-/* Signature: the gauge. A percentage alone means nothing, so the population
-   baseline is drawn on the same scale for comparison. */
+/* gauge, with the population rate marked on the same scale */
 .gauge {
   margin: 2.4rem 0 0;
 }
@@ -518,7 +508,7 @@ select {
 .gauge-fill {
   position: absolute;
   inset: 0 auto 0 0;
-  background: var(--amber);
+  background: var(--signal);
   border-radius: 3px;
   animation: sweep 0.7s var(--ease) both;
 }
@@ -562,7 +552,7 @@ select {
   margin-bottom: 1rem;
 }
 
-/* Factors, ranked, with a bar. Reads as evidence rather than a bullet list. */
+
 .factor-list {
   list-style: none;
   margin: 0;
@@ -595,7 +585,7 @@ select {
 .factor-bar {
   width: clamp(3rem, 18vw, 7rem);
   height: 5px;
-  background: var(--teal);
+  background: var(--accent);
   border-radius: 3px;
   opacity: 0.75;
 }
@@ -608,18 +598,18 @@ select {
 
 .advice {
   padding: 0.85rem 0 0.85rem 1.2rem;
-  border-left: 2px solid var(--teal-wash);
+  border-left: 2px solid var(--accent);
   margin-bottom: 0.5rem;
   color: var(--ink-soft);
   max-width: var(--measure);
 }
 
 .callout {
-  background: var(--amber-wash);
+  background: var(--signal-wash);
   border-radius: var(--radius);
   padding: 1rem 1.2rem;
   margin: 0 0 1.6rem;
-  color: #7c430f;
+  color: #ffc9c1;
   max-width: var(--measure);
 }
 
@@ -631,7 +621,7 @@ select {
   color: var(--ink-faint);
 }
 
-/* Receipt: what you actually answered, so the number is traceable. */
+
 .receipt {
   list-style: none;
   margin: 0;

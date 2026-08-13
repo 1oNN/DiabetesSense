@@ -3,9 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../App.css";
 
-/* The nineteen indicators the model was trained on, in its own order.
-   Grouped into four steps by what is actually being asked: measurements,
-   past events, how the last month has been, and background. */
+/* The 19 indicators the model takes, in its order, split across four steps. */
 
 const YES_NO = [
   [1, "Yes"],

@@ -2,8 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../App.css";
 
-/* Prevalence of diabetes in the full BRFSS 2015 cohort. The screening figure
-   is meaningless on its own, so it is always drawn against this. */
+/* Diabetes rate across the full BRFSS 2015 cohort, marked on the gauge. */
 const POPULATION_RATE = 13.9;
 
 const RECEIPT = [
@@ -60,7 +59,6 @@ function Results() {
             : "Your answers do not match the pattern the model associates with diabetes."}
         </p>
 
-        {/* Signature: your figure against the population's actual rate. */}
         <div className="gauge">
           <div className="gauge-track">
             <div className="gauge-fill" style={{ width: `${Math.min(risk, 100)}%` }} />
