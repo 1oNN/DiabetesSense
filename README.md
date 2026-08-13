@@ -28,7 +28,7 @@ Computer Engineering, COMSATS University Islamabad, 2024.*
 A 60-64 year old man with high blood pressure, high cholesterol, a BMI of 34.2,
 no regular physical activity and self-rated *fair* general health comes back at
 **70.0%**, against a rate of 13.9% across the survey population. The result names
-the five answers that drove it, attaches a recommendation to each, and lists back
+the six answers that drove it, attaches a recommendation to each, and lists back
 everything he entered.
 
 ![The results view, with contributing factors and recommendations](docs/assets/demo-result.png)

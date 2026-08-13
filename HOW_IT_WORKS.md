@@ -200,8 +200,9 @@ The system identifies problematic indicators:
 - **High Cholesterol**: `HighChol == 1`
 - **High BMI**: `BMI > 30`
 - **Lack of Physical Activity**: `PhysActivity == 0`
-- **Older Age**: `Age > 45`. Note that `Age` is a 1-13 band index, not a year
-  count, so this comparison never fires and the factor is not currently reported
+- **Older Age**: `Age >= 9`, meaning the 60-64 band or older. `Age` is a band
+  index, not a year count. Band 9 is the first whose prevalence (17.2%) sits
+  above the 13.9% rate across the whole survey
 - **Poor General Health**: `GenHlth >= 4`
 
 ### Recommendations Generation

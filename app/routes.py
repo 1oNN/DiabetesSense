@@ -22,6 +22,11 @@ FEATURE_ORDER = [
     'Age', 'Education', 'Income',
 ]
 
+# Age is a band index (1 = 18-24 ... 13 = 80+), not a year count. Band 9 is
+# 60-64, the first band whose prevalence (17.2%) is above the 13.9% rate across
+# the survey.
+OLDER_AGE_BAND = 9
+
 def get_contributing_factors(data):
     contributing_factors = []
     if data['HighBP'] == 1:
@@ -32,7 +37,7 @@ def get_contributing_factors(data):
         contributing_factors.append('High BMI')
     if data['PhysActivity'] == 0:
         contributing_factors.append('Lack of Physical Activity')
-    if data['Age'] > 45:
+    if data['Age'] >= OLDER_AGE_BAND:
         contributing_factors.append('Older Age')
     if data['GenHlth'] >= 4:
         contributing_factors.append('Poor General Health')
