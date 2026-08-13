@@ -69,9 +69,13 @@ pids/
 *.seed
 *.pid.lock
 
-# Remove Python site-packages if accidentally tracked
-Lib/
-Scripts/
+# A stray virtualenv was created at the repo root; these are its directories.
+# Anchored to the root so they cannot swallow nested paths. Note that Windows
+# checkouts match ignore rules case-insensitively, so `Scripts/` here also
+# matches a lowercase `scripts/` - which is why the chart tooling lives in
+# `tools/` rather than `scripts/`.
+/Lib/
+/Scripts/
 
 # Claude (your tool)
 .claude

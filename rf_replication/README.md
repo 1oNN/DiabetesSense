@@ -5,7 +5,7 @@ of At-Risk Diabetic Individuals* (Ahmad & Javed, COMSATS Islamabad, 2024),
 against `../diabetes_dataset/diabetes_binary_health_indicators_BRFSS2015.csv`.
 
 The `results_*.json` files here are the source data for the charts in the top-level
-README; `scripts/make_readme_charts.py` reads them. Local working material - training
+README; `tools/make_readme_charts.py` reads them. Local working material - training
 logs, PNG figures, scratch analysis - is gitignored.
 
 ## Summary of what was found

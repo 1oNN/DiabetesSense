@@ -175,7 +175,7 @@ tabular data — sit in a flat cluster in the mid-seventies, while the two model
 memorise the answer space outright take the top two places.
 
 > The charts on this page are regenerated from `rf_replication/results_*.json` by
-> [`scripts/make_readme_charts.py`](scripts/make_readme_charts.py), which is a re-run
+> [`tools/make_readme_charts.py`](tools/make_readme_charts.py), which is a re-run
 > of the benchmark rather than the original thesis run. It lands at **94.02%** against
 > the **93.15%** reported in the write-up; the figures move with the seed and the tree
 > count, and the ordering is unchanged.
@@ -305,7 +305,7 @@ Source: `rf_replication/results_{ROS,SMOTE,ADASYN}.json`.
 | Logistic Regression | 73.70% | 76.05% | 71.42% |
 | Naive Bayes | 71.57% | 79.28% | 64.07% |
 
-Regenerate everything with `python scripts/make_readme_charts.py`.
+Regenerate everything with `python tools/make_readme_charts.py`.
 
 </details>
 
@@ -320,7 +320,7 @@ Regenerate everything with `python scripts/make_readme_charts.py`.
 | Benchmark | 11 classifiers × 3 samplers | `rf_replication/thesis_replication.py` |
 | API | Flask 3, flask-cors, joblib | `app/routes.py` |
 | Front end | React 18, react-router 6, axios | `diabetes-predictor/src/` |
-| Charts | matplotlib, light/dark SVG pairs | `scripts/make_readme_charts.py` |
+| Charts | matplotlib, light/dark SVG pairs | `tools/make_readme_charts.py` |
 | Container | node:18 build → python:3.9 runtime | `Dockerfile`, `docker-compose.yml` |
 
 ---
@@ -355,7 +355,7 @@ npm install && npm start            # http://localhost:3000
 > clean clone.
 
 To regenerate the charts on this page, install the extra tooling with
-`pip install -r requirements-dev.txt` and run `python scripts/make_readme_charts.py`.
+`pip install -r requirements-dev.txt` and run `python tools/make_readme_charts.py`.
 
 ---
 
