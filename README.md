@@ -331,8 +331,8 @@ Regenerate everything with `python tools/make_readme_charts.py`.
 Requires Python 3.11 and Node 18+.
 
 ```bash
-git clone https://github.com/1oNN/diabetes-app.git
-cd diabetes-app
+git clone https://github.com/1oNN/DiabetesSense.git
+cd DiabetesSense
 
 # 1. Backend
 pip install -r requirements.txt
